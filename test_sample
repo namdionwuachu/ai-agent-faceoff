@@ -1,0 +1,39 @@
+# Quick data verification
+import pandas as pd
+import requests
+from io import StringIO
+
+def verify_analysis():
+    # Get the same data your frameworks are using
+    resp = requests.get("https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv")
+    df = pd.read_csv(StringIO(resp.text))
+    
+    print("🔍 DATA VERIFICATION")
+    print("=" * 50)
+    print(f"Dataset: {len(df)} rows")
+    print(f"Columns: {', '.join(df.columns)}")
+    print("\n📈 Basic Stats:")
+    print(f"Average tip: ${df['tip'].mean():.2f}")
+    print(f"Average total bill: ${df['total_bill'].mean():.2f}")
+    print(f"Average tip percentage: {(df['tip'] / df['total_bill'] * 100).mean():.1f}%")
+    
+    # Check Saturday vs other days
+    saturday_data = df[df['day'] == 'Sat']
+    other_days = df[df['day'] != 'Sat']
+    
+    print(f"\n📊 Saturday Analysis:")
+    print(f"Saturday average bill: ${saturday_data['total_bill'].mean():.2f}")
+    print(f"Other days average bill: ${other_days['total_bill'].mean():.2f}")
+    
+    sat_bill_increase = ((saturday_data['total_bill'].mean() - other_days['total_bill'].mean()) / other_days['total_bill'].mean()) * 100
+    print(f"Saturday bill increase: {sat_bill_increase:.1f}%")
+    
+    sat_tip_pct = (saturday_data['tip'] / saturday_data['total_bill'] * 100).mean()
+    other_tip_pct = (other_days['tip'] / other_days['total_bill'] * 100).mean()
+    tip_pct_increase = ((sat_tip_pct - other_tip_pct) / other_tip_pct) * 100
+    print(f"Saturday tip % increase: {tip_pct_increase:.1f}%")
+    
+    return df
+
+# Run verification
+df = verify_analysis()
