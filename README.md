@@ -54,13 +54,33 @@ source .venv/bin/activate  # or .\venv\Scripts\activate on Windows
 
 # Install deps
 pip install -r requirements.txt
+
 3️⃣ Configuration
 cp env.template .env
+
 Edit .env:
+
+
+# Required: Your Google API Key
+GOOGLE_API_KEY=my google gemini key
+MODEL=models/gemini-2.0-flash
+
 OPENAI_API_KEY=sk-your-key-here
 OPENAI_MODEL=gpt-4o-mini
 CSV_URL=https://raw.githubusercontent.com/mwaskom/seaborn-data/master/tips.csv
-(You can also configure Gemini 2.0 Flash or other LLMs.)
+
+# Optional: Comma-separated list of models to try (override defaults)
+AVAILABLE_MODELS=models/gemini-2.0-flash,models/gemini-2.5-flash,models/gemini-pro-latest
+CREWAI_FALLBACK_MODELS=gemini/gemini-1.5-flash,gemini/gemini-1.5-pro
+
+# Optional: CrewAI tracing (for debugging)
+CREWAI_TRACING_ENABLED=true
+
+
+
+
+
+
 ▶️ Run the Tests
 # AutoGen demo (conversational)
 python autogen_demo.py
@@ -73,24 +93,29 @@ python crewai_demo.py
 
 # Unified comparison with telemetry
 python three_way_comparison_pre_cal_real_frameworks.py
+
 📊 Framework Comparison
 Framework	Paradigm	Key Strength	Ideal Use
 AutoGen	Conversational agents	Emergent reasoning & autonomy	Exploratory analytics, research
 LangGraph	State-driven workflow	Deterministic orchestration & traceability	Data pipelines, ETL processes
 CrewAI	Role-based collaboration	Human-like teamwork & business fidelity	Business reporting, multi-role automation
+
 🧠 How It Works
 🔹 AutoGen Approach
 Creates two AI agents (ProjectManager ↔ DataAnalyst)
 Agents collaborate through multi-turn conversation
 Emergent workflow – agents decide how to approach the task
+
 🔸 LangGraph Approach
 Builds structured graph nodes: fetch → analyze → report
 Deterministic execution with state persistence
 Predictable and production-ready
+
 🟢 CrewAI Approach
 Defines role-based agents (ProjectManager, Analyst, Comms)
 Executes sequential collaboration with shared context
 Produces high-fidelity, stakeholder-ready reports
+
 📈 Real Telemetry (Authentic Run)
 From three_way_comparison_pre_cal_real_frameworks.py using real metrics from tips.csv:
 Framework	LLM Calls	Duration	Behavior
@@ -102,12 +127,14 @@ Authentic Seaborn tips.csv → pre-calculated metrics:
 Total Revenue: $4,827.77
 Total Tips: $731.58
 Average Tip Rate: 16.1 %
+
 💡 Key Features
 Data Agnostic – works with any CSV URL
 Professional Output – executive-ready emails
 Error Resilient – handles network and data issues
 Security First – .gitignore protects API keys
 Framework Agnostic Core – shared data logic in common_utils.py
+
 🧾 Example Output
 Subject: Restaurant Tip Analysis – Key Insights for Business Optimization
 
@@ -115,11 +142,13 @@ Subject: Restaurant Tip Analysis – Key Insights for Business Optimization
 • Average tip rate ≈ 16.1 %.  
 • Friday and Saturday dinners show higher average spend.  
 • Recommendations: Target weekend evenings for promotions and staff optimization.
+
 🧰 Extend It
 Add multi-source data (REST, SQL, S3)
 Add human approval steps (“human-in-the-loop”)
 Export to Slack, PDF, or QuickSight
 Integrate CrewAI memory for cross-report context
+
 ⚠️ Security Notice
 .gitignore prevents .env from being committed.
 Never share API keys in code or logs.
