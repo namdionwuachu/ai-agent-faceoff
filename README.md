@@ -60,7 +60,6 @@ cp env.template .env
 
 Edit .env:
 
-
 # Required: Your Google API Key
 GOOGLE_API_KEY=my google gemini key
 MODEL=models/gemini-2.0-flash
@@ -75,10 +74,6 @@ CREWAI_FALLBACK_MODELS=gemini/gemini-1.5-flash,gemini/gemini-1.5-pro
 
 # Optional: CrewAI tracing (for debugging)
 CREWAI_TRACING_ENABLED=true
-
-
-
-
 
 
 ▶️ Run the Tests
